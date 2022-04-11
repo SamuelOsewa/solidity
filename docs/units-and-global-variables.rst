@@ -161,7 +161,6 @@ Members of string
 
 - ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of string arguments to one string array<string-concat>`
 
-
 .. index:: assert, revert, require
 
 Error Handling

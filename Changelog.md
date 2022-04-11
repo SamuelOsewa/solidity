@@ -5,6 +5,8 @@ Important Bugfixes:
 
 
 Language Features:
+* General: Add `E.selector` for a non-anonymous event `E` to access the 32-byte selector topic.
+* General: Errors and Events allow qualified access from other contracts.
 
 
 Compiler Features:
