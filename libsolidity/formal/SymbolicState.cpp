@@ -295,6 +295,8 @@ void SymbolicState::buildABIFunctions(set<FunctionCall const*> const& _abiFuncti
 			name.replace(name.find('('), 1, "$");
 		while (name.find(')') != string::npos)
 			name.replace(name.find(')'), 1, "$");
+		while (name.find(',') != string::npos)
+			name.replace(name.find(','), 1, "$");
 
 		m_abiMembers[funCall] = {name, inTypes, outTypes};
 

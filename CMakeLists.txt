@@ -34,7 +34,7 @@ endif()
 
 option(SOLC_LINK_STATIC "Link solc executable statically on supported platforms" OFF)
 option(SOLC_STATIC_STDLIBS "Link solc against static versions of libgcc and libstdc++ on supported platforms" OFF)
-option(STRICT_Z3_VERSION "Use the latest version of Z3" ON)
+option(STRICT_Z3_VERSION "Use the latest version of Z3" OFF)
 
 # Setup cccache.
 include(EthCcache)
@@ -65,7 +65,7 @@ configure_file("${CMAKE_SOURCE_DIR}/cmake/templates/license.h.in" include/licens
 
 include(EthOptions)
 configure_project(TESTS)
-set(LATEST_Z3_VERSION "4.8.16")
+set(LATEST_Z3_VERSION "4.8.14")
 set(MINIMUM_Z3_VERSION "4.8.0")
 find_package(Z3)
 if (${Z3_FOUND})
