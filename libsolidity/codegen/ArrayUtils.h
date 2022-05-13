@@ -31,6 +31,7 @@ namespace solidity::frontend
 class CompilerContext;
 class Type;
 class ArrayType;
+class InlineArrayType;
 
 /**
  * Class that provides code generation for handling arrays.
@@ -45,6 +46,13 @@ public:
 	/// Stack pre: source_reference [source_length] target_reference
 	/// Stack post: target_reference
 	void copyArrayToStorage(ArrayType const& _targetType, ArrayType const& _sourceType) const;
+
+	/// Movess an inline array to an array in storage. The arrays can be of different types only if
+	/// their storage representation is the same.
+	/// Stack pre: source target_reference
+	/// Stack post: target_reference
+	void moveInlineArrayToStorage(ArrayType const& _targetType, InlineArrayType const& _sourceType) const;
+
 	/// Copies the data part of an array (which cannot be dynamically nested) from anywhere
 	/// to a given position in memory.
 	/// This always copies contained data as is (i.e. structs and fixed-size arrays are copied in
@@ -113,6 +121,24 @@ private:
 	/// @param byteOffsetPosition the stack offset of the storage byte offset
 	/// @param storageOffsetPosition the stack offset of the storage slot offset
 	void incrementByteOffset(unsigned _byteSize, unsigned _byteOffsetPosition, unsigned _storageOffsetPosition) const;
+
+	/// Appends code that computes storage position of the array element.
+	/// @param index array element index
+	/// @param byteSize array element size in bytes
+	/// @param hasByteOffset determines if packing multiple small types into a single storage slot is possible
+	/// Stack pre: data_position_storage_slot
+	/// Stack post: element_slot byte_offset
+	void computeStoragePosition(unsigned _index, unsigned _byteSize, bool _hasByteOffset) const;
+
+	// Appends code that clears elements that might be leftover in the slot
+	// Appends code that set to zero all elements in slot starting at offset
+	/// @param type element type
+	/// @param byteOffsetPosition the stack offset of the storage byte offset
+	/// @param storageOffsetPosition the stack offset of the storage slot offset
+	/// Stack pre: slot offset
+	/// Stack post:
+	void clearLeftoversInSlot(Type const& _type, unsigned _byteOffsetPosition, unsigned _storageOffsetPosition) const;
+
 
 	CompilerContext& m_context;
 };
